@@ -1,14 +1,14 @@
 
-stage 'Prep' {
+stage('Prep') {
     echo 'Prep'
     sh 'find .'
 }
 
-stage 'Build' {
+stage('Build') {
     echo 'Build'
 }
 
-stage 'Test' {
+stage('Test') {
     echo 'Test'
 }
 
