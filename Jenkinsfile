@@ -1,6 +1,7 @@
 
 stage('Prep') {
     echo 'Prep'
+    checkout scm
     node {
         sh 'echo prep me'
         sh 'find .'
