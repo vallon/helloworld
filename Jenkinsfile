@@ -1,24 +1,41 @@
 
-stage('Prep') {
+stage('Checkout') {
     echo 'Prep'
     node {
     	deleteDir()
-        checkout scm
+	dir('helloworld') {
+	    checkout scm
+	}
+	dir('msggen') {
+            git 'https://github.com/vallon/msggen'
+	}
+    }
+}
+
+stage('Configure') {
+    echo 'Configure'
+    node {
+        dir('helloworld') {
+            sh 'cmake .'
+        }
     }
 }
 
 stage('Build') {
     echo 'Build'
     node {
-        sh 'cmake .'
-        sh 'make'
+        dir('helloworld') {
+            sh 'make'
+        }
     }
 }
 
 stage('Test') {
     echo 'Test'
     node {
-        sh './helloworld'
+        dir('helloworld') {
+            sh './helloworld'
+        }
     }
 }
 
