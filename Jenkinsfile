@@ -1,6 +1,7 @@
 
-stage 'Checkout' {
-    checkout scm
+stage 'Prep' {
+    echo 'Prep'
+    sh 'find .'
 }
 
 stage 'Build' {
