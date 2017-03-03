@@ -1,31 +1,27 @@
 
 stage('Checkout') {
-    properties([
-        [
-	    $class: 'hudson.triggers.SCMTrigger',
-	    scmpoll_spec: ''
-	]
-    ])
+    properties properties: [ pipelineTriggers([pollSCM('')]) ]
+
     node {
-    	deleteDir()
-	dir('helloworld') {
-	    checkout scm
-	}
-	dir('msggen') {
+        deleteDir()
+        dir('helloworld') {
+            checkout scm
+        }
+        dir('msggen') {
             checkout([
-		$class: 'GitSCM',
-		branches: [[name: '*/master']],
-		doGenerateSubmoduleConfigurations: false,
-		extensions: [],
-		submoduleCfg: [],
-		userRemoteConfigs: [
-		    [
-		        credentialsId: '49f4b3d6-92d5-4b89-bcd1-507ccd68b6fb',
-			url: 'https://github.com/vallon/msggen'
-		    ]
-		]
-	    ])
-	}
+                $class: 'GitSCM',
+                branches: [[name: '*/master']],
+                doGenerateSubmoduleConfigurations: false,
+                extensions: [],
+                submoduleCfg: [],
+                userRemoteConfigs: [
+                    [
+                        credentialsId: '49f4b3d6-92d5-4b89-bcd1-507ccd68b6fb',
+                        url: 'https://github.com/vallon/msggen'
+                    ]
+                ]
+            ])
+        }
     }
 }
 
