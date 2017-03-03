@@ -1,6 +1,6 @@
 
 stage('Checkout') {
-    properties properties: [ pipelineTriggers([pollSCM('')]) ]
+    properties properties: [ pipelineTriggers([githubPush(), pollSCM('')]) ]
 
     node {
         deleteDir()
