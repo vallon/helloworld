@@ -1,6 +1,11 @@
 
 stage('Checkout') {
-    echo 'Prep'
+    properties([
+        [
+	    $class: 'hudson.triggers.SCMTrigger',
+	    scmpoll_spec: ''
+	]
+    ])
     node {
     	deleteDir()
 	dir('helloworld') {
