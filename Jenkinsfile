@@ -1,3 +1,4 @@
+#!groovy
 
 stage('Checkout') {
     properties properties: [ pipelineTriggers([githubPush()]) ]
