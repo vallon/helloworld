@@ -1,42 +1,40 @@
-#!groovy
+/* groovy */
 
-stage('Checkout') {
-    properties properties: [ pipelineTriggers([githubPush()]) ]
-
-    node {
-        deleteDir()
-        dir('helloworld') {
-            checkout scm
-        }
-        dir('msggen') {
-	    git 'https://github.com/vallon/msggen'
-        }
+def clean(Closure fn) {
+    deleteDir();
+    try {
+        fn();
+    } finally {
+        deleteDir();
     }
 }
 
-stage('Configure') {
-    echo 'Configure'
-    node {
-        dir('helloworld') {
-            sh 'cmake .'
-        }
-    }
-}
+properties([ pipelineTriggers([githubPush()]) ]);
 
-stage('Build') {
-    echo 'Build'
-    node {
-        dir('helloworld') {
-            sh 'make'
+node('osprey || toucan') {
+    clean {
+        stage('Checkout') {
+            dir('helloworld') {
+                checkout(scm);
+            }
+            dir('msggen') {
+                git('https://github.com/vallon/msggen');
+            }
         }
-    }
-}
-
-stage('Test') {
-    echo 'Test'
-    node {
-        dir('helloworld') {
-            sh './helloworld'
+        stage('Configure') {
+            dir('helloworld') {
+                sh 'cmake .';
+            }
+        }
+        stage('Build') {
+            dir('helloworld') {
+                sh 'make';
+            }
+        }
+        stage('Test') {
+            dir('helloworld') {
+                sh './helloworld';
+            }
         }
     }
 }
